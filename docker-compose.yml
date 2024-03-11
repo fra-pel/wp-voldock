@@ -1,0 +1,78 @@
+version: '3.3'
+services:
+  wp__:
+    image: wordpress:latest
+    container_name: ${COMPOSE_PROJECT_NAME}_wp
+    volumes:
+      - ./config/php.conf.ini:/usr/local/etc/php/conf.d/php.ini
+      - dv_:/var/www/html
+    environment:
+      - WORDPRESS_DB_NAME=${COMPOSE_PROJECT_NAME}
+      - WORDPRESS_TABLE_PREFIX=${WORDPRESS_TABLE_PREFIX}
+      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
+      - WORDPRESS_DB_USER=${DATABASE_USER}
+      - WORDPRESS_DB_PASSWORD=${DATABASE_PASSWORD}
+    depends_on:
+      - db_
+      - phpmyadmin
+    restart: always
+    ports:
+        - iploc:por1:80
+    networks:
+      default:
+        ipv4_address: indir1
+
+
+  db_:
+    image: mariadb:latest
+    container_name: ${COMPOSE_PROJECT_NAME}_db
+    volumes:
+      - dbv_:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_USER=${DATABASE_USER}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_DATABASE=${COMPOSE_PROJECT_NAME}
+    restart: always
+    networks:
+      default:
+        ipv4_address: indir3
+
+  phpmyadmin:
+    depends_on:
+      - db_
+    image: phpmyadmin:latest
+    container_name: ${COMPOSE_PROJECT_NAME}_phpma
+    restart: always
+    ports:
+      - iploc:por2:80
+    environment:
+      PMA_HOST: db_
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+    networks:
+      default:
+        ipv4_address: indir2
+
+
+ # Check availability of essential services
+#  healthcheck:
+#    image: wpcli
+#    container_name: ${COMPOSE_PROJECT_NAME}_healthcheck
+#    command: sh -c "/wait"
+#    environment:
+#      - WAIT_HOSTS=mysql:3306, wordpress:80
+#      - WAIT_BEFORE_HOSTS=${WAIT_BEFORE_HOSTS:-30}
+#      - WAIT_AFTER_HOSTS=${WAIT_AFTER_HOSTS:-15}
+#      - WAIT_HOSTS_TIMEOUT=${WAIT_HOSTS_TIMEOUT:-300}
+#      - WAIT_SLEEP_INTERVAL=${WAIT_SLEEP_INTERVAL:-30}
+#      - WAIT_HOST_CONNECT_TIMEOUT=${WAIT_HOST_CONNECT_TIMEOUT:-30}
+
+networks:
+  default:
+    external:
+      name: aqua
+
+volumes:
+  dv_:
+  dbv_:
+
