@@ -1,0 +1,26 @@
+Nome stack: name_
+IP interfaccia locale: iploc
+
+----------WORDPRESS----------
+
+NOME: wp__
+IP: indir1
+PORTA: por1
+VOLUME: name__wdata
+
+------------MARIADB----------
+
+NOME: zx_
+IP: indir2
+VOLUME: name__ddata
+HOST: zx_
+USERNAME: wpdocksql
+PASSWORD: ran_
+PREFIX: pr_
+
+----------PHPMYADMIN----------
+
+NOME: name__phpma
+IP: indir3
+PORTA: por2
+

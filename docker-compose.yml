@@ -2,6 +2,7 @@ version: '3.3'
 services:
   wp__:
     image: wordpress:latest
+    #image: wordpress:fpm-alpine
     container_name: ${COMPOSE_PROJECT_NAME}_wp
     volumes:
       - ./config/php.conf.ini:/usr/local/etc/php/conf.d/php.ini
@@ -25,6 +26,7 @@ services:
 
   db_:
     image: mariadb:latest
+    #image: mariadb:fpm-alpine
     container_name: ${COMPOSE_PROJECT_NAME}_db
     volumes:
       - dbv_:/var/lib/mysql
@@ -36,7 +38,7 @@ services:
     restart: always
     networks:
       default:
-        ipv4_address: indir3
+        ipv4_address: indir2
 
   phpmyadmin:
     depends_on:
@@ -51,7 +53,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
     networks:
       default:
-        ipv4_address: indir2
+        ipv4_address: indir3
 
 
  # Check availability of essential services
